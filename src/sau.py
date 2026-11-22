@@ -9,7 +9,7 @@ import torch
 from torch import nn
 from sklearn.preprocessing import StandardScaler
 from . import config as C
-from .utils import read_hourly,splits,binary_scores
+from .utils import complete_window_targets, read_hourly,forecast_splits,binary_scores
 
 class NeuroFuzzy(nn.Module):
     def __init__(self):
@@ -27,15 +27,11 @@ class NeuroFuzzy(nn.Module):
         return (norm*consequent).sum(dim=1)
 
 def main():
-    s=read_hourly().stage_ft.to_numpy();n=len(s);sp=splits(n)
-    X=[];Y=[];at=[];stage_now=[]
-    for target in range(3,n):
-        # target is t+1; all features are at/before t=target-1
-        h=s[target-1];old=s[target-2];old3=s[target-4] if target>=4 else np.nan
-        future=s[target]
-        if np.isfinite([h,old,old3,future]).all():
-            X.append([h,h-old3]);Y.append(int(future>=C.MINOR_STAGE));at.append(target);stage_now.append(h)
-    X=np.asarray(X);Y=np.asarray(Y);at=np.asarray(at);stage_now=np.asarray(stage_now)
+    stage=read_hourly().stage_ft;s=stage.to_numpy();sp=forecast_splits(stage.index)
+    at=np.flatnonzero(complete_window_targets(s[:sp['test'][1]], 4))
+    stage_now=s[at-1]
+    X=np.column_stack((stage_now, stage_now-s[at-4]))
+    Y=(s[at]>=C.MINOR_STAGE).astype(int)
     masks={k:(at>=v[0])&(at<v[1]) for k,v in sp.items()}
     for name,mask in masks.items():
         print(name,'rows',mask.sum(),'flood hours',Y[mask].sum())
@@ -64,7 +60,7 @@ def main():
     scores={'neuro_fuzzy_demo':binary_scores(Y[te],pred),'persistence_threshold':binary_scores(Y[te],base),
             'note':'ANFIS-like first-order Sugeno network with end-to-end gradient training. Supervisor approval required.'}
     json.dump(scores,open(C.METRICS/'sau_binary.json','w'),indent=2)
-    dates=read_hourly().index[at[te]]
+    dates=stage.index[at[te]]
     pd.DataFrame({'time_utc':dates,'true_flood_next_hour':Y[te],
                   'pred_flood_next_hour':pred,'prob_flood':prob,'baseline_flood':base}).to_csv(C.METRICS/'sau_binary_preds.csv',index=False)
     print(json.dumps(scores,indent=2))

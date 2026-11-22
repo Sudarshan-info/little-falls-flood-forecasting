@@ -21,6 +21,44 @@ def splits(n):
     assert 0 < a < b < n
     return {'train': (0, a), 'val': (a,b), 'test': (b,n)}
 
+
+CHECKPOINT6_CUTOFFS = tuple(pd.Timestamp(day, tz='UTC') for day in (
+    '2015-01-01', '2023-01-01', '2024-01-01', '2026-01-01',
+))
+CANONICAL_CUTOFFS = (pd.Timestamp('2007-10-01', tz='UTC'), *CHECKPOINT6_CUTOFFS[1:])
+
+
+def calendar_splits(index, cutoffs, label):
+    """Select target rows by UTC cutoff; the final partial bucket is outside the study."""
+    if not index.equals(pd.date_range(cutoffs[0], cutoffs[-1], freq='h')):
+        raise ValueError(f'{label} requires the complete hourly cutoff grid.')
+    bounds = index.searchsorted(cutoffs)
+    return dict(zip(('train', 'val', 'test'), zip(bounds[:-1], bounds[1:])))
+
+
+def checkpoint6_splits(index):
+    return calendar_splits(index, CHECKPOINT6_CUTOFFS, 'Checkpoint 6')
+
+
+def forecast_splits(index):
+    if len(index) and index[0].normalize() == CANONICAL_CUTOFFS[0]:
+        return calendar_splits(index, CANONICAL_CUTOFFS, 'Canonical study')
+    if len(index) and index[0] == CHECKPOINT6_CUTOFFS[0]:
+        return checkpoint6_splits(index)
+    return splits(len(index))
+
+
+def complete_window_targets(values, lookback):
+    """Mask target positions with a finite target and every preceding lookback hour."""
+    values = np.asarray(values, dtype=float)
+    if lookback < 1:
+        raise ValueError('Lookback must include at least one preceding hour.')
+    eligible = np.zeros(len(values), dtype=bool)
+    if lookback < len(values):
+        invalid = np.r_[0, np.cumsum(~np.isfinite(values), dtype=np.int64)]
+        eligible[lookback:] = invalid[lookback + 1:] == invalid[:len(values) - lookback]
+    return eligible
+
 def stats(y, pred):
     y = np.asarray(y, dtype=float)
     pred = np.asarray(pred, dtype=float)

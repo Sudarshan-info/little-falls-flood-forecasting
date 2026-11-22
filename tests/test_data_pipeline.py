@@ -80,6 +80,23 @@ class DataPipelineTests(unittest.TestCase):
         self.request.assert_not_called()
         self.assertEqual(target.read_text(), 'real observations')
 
+    def test_separate_fetch_directory_preserves_main_and_skips_empty_month(self):
+        target = self.folder / 'measurements.csv'
+        target.write_text('main observations')
+        separate = self.folder / 'exploration'
+        empty = pd.DataFrame(columns=list(fetch.FIELDS))
+        available = pd.DataFrame([['2024-02-01', 8, 'ft', 'Approved', None, '001']],
+                                 columns=list(fetch.FIELDS))
+        with patch.object(fetch, 'fetch_month', side_effect=[empty, available]):
+            self.run_fetch('2024-01-31', '2024-02-01', '--output-dir', str(separate))
+        self.assertEqual(target.read_text(), 'main observations')
+        self.assertEqual(pd.read_csv(separate / 'measurements.csv')['stage_ft'].tolist(), [8])
+        self.assertEqual(len(list(separate.glob('usgs_*.csv'))), 1)
+        self.assertFalse(list(self.folder.glob('usgs_*.csv')))
+        with self.assertRaises(SystemExit):
+            self.run_fetch('2024-01-31', '2024-02-01', '--output-dir', str(separate))
+        self.request.assert_not_called()
+
     def test_hourly_alignment_and_gaps(self):
         (self.folder / 'measurements.csv').write_text(
             'time_utc,stage_ft,unit\n'

@@ -4,7 +4,28 @@ import json
 import numpy as np
 import pandas as pd
 from . import config as C
-from .utils import stage_class
+from .utils import CANONICAL_CUTOFFS, stage_class
+
+
+def hourly_stage(raw):
+    """Aggregate valid readings with a sorted, unique UTC timestamp index."""
+    # A row labeled 11:00 only uses readings in (10:00, 11:00].
+    hourly = raw.assign(observed_time_utc=raw.index).resample('h', closed='right', label='right')
+    return hourly.agg(stage_ft=('stage_ft', 'last'),
+                      n_source_in_hour=('stage_ft', 'count'),
+                      observed_time_utc=('observed_time_utc', 'last'))
+
+
+def canonical_hourly_stage(raw):
+    start, _, _, stop = CANONICAL_CUTOFFS
+    if not ((raw.index >= start) & (raw.index < stop)).all():
+        raise ValueError('Raw timestamps fall outside the canonical study period.')
+    grid = pd.date_range(start, stop, freq='h', name='time_utc')
+    result = hourly_stage(raw).reindex(grid)
+    result['n_source_in_hour'] = result.n_source_in_hour.fillna(0).astype(int)
+    result['observed_class'] = result.stage_ft.map(stage_class)
+    return result
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -23,6 +44,11 @@ def main():
     raw['time_utc'] = pd.to_datetime(raw['time_utc'], format='ISO8601', utc=True, errors='coerce')
     raw['stage_ft'] = pd.to_numeric(raw['stage_ft'], errors='coerce')
     invalid = raw.time_utc.isna() | ~np.isfinite(raw.stage_ft)
+    canonical = raw.time_utc.min().normalize() == CANONICAL_CUTOFFS[0] if raw.time_utc.notna().any() else False
+    if canonical and (invalid.any() or raw.time_utc.duplicated().any()
+                      or 'time_series_id' not in raw or raw.time_series_id.isna().any()
+                      or raw.time_series_id.nunique() != 1):
+        raise ValueError('Canonical input has invalid rows, duplicate timestamps or an ambiguous series. Review before preparing.')
     print('Invalid source rows:', invalid.sum())
     raw = raw.loc[~invalid].sort_values('time_utc', kind='stable')
     if raw.empty:
@@ -35,13 +61,12 @@ def main():
     duplicates=raw.time_utc.duplicated().sum()
     print('Duplicate source timestamps:',duplicates)
     raw=raw.drop_duplicates('time_utc',keep='last').set_index('time_utc')
-    # A row labeled 11:00 only uses readings in (10:00, 11:00].
-    hourly = raw.assign(observed_time_utc=raw.index).resample('h', closed='right', label='right')
-    out = hourly.agg(stage_ft=('stage_ft', 'last'),
-                     n_source_in_hour=('stage_ft', 'count'),
-                     observed_time_utc=('observed_time_utc', 'last'))
+    if canonical:
+        out = canonical_hourly_stage(raw)
+    else:
+        out = hourly_stage(raw)
+        out['observed_class'] = out.stage_ft.map(stage_class)
     h = out.stage_ft
-    out['observed_class']=[stage_class(float(x)) for x in out.stage_ft]
     out.to_csv(C.PROCESSED / f'{prefix}hourly_stage.csv', index_label='time_utc')
     qc={'first_hour_utc':str(h.index.min()),'last_hour_utc':str(h.index.max()),
         'source_rows':int(len(raw)),'hourly_rows':int(len(out)),

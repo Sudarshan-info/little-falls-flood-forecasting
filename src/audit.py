@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import acf, adfuller, kpss
 from statsmodels.tsa.seasonal import STL
 from . import config as C
-from .utils import read_hourly,splits
+from .utils import read_hourly,forecast_splits
 
 def main():
-    df=read_hourly(); s=df.stage_ft; sp=splits(len(s)); tr=s.iloc[:sp['train'][1]]
+    df=read_hourly(); s=df.stage_ft; sp=forecast_splits(s.index); tr=s.iloc[:sp['train'][1]]
     plt.figure(figsize=(12,4));plt.plot(s.index,s,label='stage',lw=.8)
     plt.axhline(C.MINOR_STAGE,ls='--',label='7 ft flood threshold');plt.ylabel('Stage (ft)');plt.legend()
     plt.tight_layout();plt.savefig(C.FIGURES/'observed_stage.png',dpi=160);plt.close()

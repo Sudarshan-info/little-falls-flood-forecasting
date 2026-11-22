@@ -67,3 +67,14 @@ Thumbs.db
 !/outputs/metrics/qc_event_split_membership.csv
 !/outputs/metrics/qc_event_separation.csv
 !/outputs/metrics/qc_baseline_summary.csv
+
+# Canonical QC summaries approved for publication with the source.
+!/outputs/canonical_qc/
+!/outputs/canonical_qc/annual_statistics.csv
+!/outputs/canonical_qc/chronological_split.csv
+!/outputs/canonical_qc/flood_events.csv
+!/outputs/canonical_qc/hourly_gap_runs.csv
+!/outputs/canonical_qc/raw_gap_runs.csv
+!/outputs/canonical_qc/window_eligibility.csv
+!/outputs/canonical_qc/dataset_qc.json
+!/outputs/canonical_qc/flood_events_and_hours.png

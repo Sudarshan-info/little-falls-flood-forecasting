@@ -87,6 +87,8 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument('--start',required=True,help='YYYY-MM-DD')
     p.add_argument('--end',required=True,help='YYYY-MM-DD')
+    p.add_argument('--output-dir', type=Path, default=C.RAW,
+                   help='Directory for measurements.csv and monthly cache files (default: data/raw).')
     p.add_argument('--overwrite', action='store_true', help='Replace an existing measurements.csv.')
     a=p.parse_args()
     try:
@@ -98,13 +100,14 @@ def main():
     today = pd.Timestamp.now(tz='UTC').date()
     if start > end or end > today:
         p.error('Require start <= end <= today (UTC).')
-    target = C.RAW / 'measurements.csv'
+    target = a.output_dir / 'measurements.csv'
     if target.exists() and not a.overwrite:
         p.error('measurements.csv already exists. Use --overwrite to replace it explicitly.')
+    a.output_dir.mkdir(parents=True, exist_ok=True)
 
     parts = []
     for begin, finish, month in months(a.start, a.end):
-        path = C.RAW / f'usgs_{C.SITE}_{C.PARAMETER}_{begin}_{finish}.csv'
+        path = a.output_dir / f'usgs_{C.SITE}_{C.PARAMETER}_{begin}_{finish}.csv'
         cacheable = finish < today.isoformat()
         if cacheable and path.exists():
             rows = within_dates(pd.read_csv(path, dtype={'time_series_id': str}), begin, finish)
@@ -127,6 +130,6 @@ def main():
             all_rows.to_csv(target, index=False, mode='x')
         except FileExistsError:
             p.error('measurements.csv already exists. Use --overwrite to replace it explicitly.')
-    print('Saved data/raw/measurements.csv; rows:',len(all_rows),'time series:',all_rows.time_series_id.nunique())
+    print(f'Saved {target}; rows:', len(all_rows), 'time series:', all_rows.time_series_id.nunique())
     if all_rows['unit'].dropna().nunique()>1:print('STOP: mixed measurement units, inspect before preparing.')
 if __name__=='__main__':main()

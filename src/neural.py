@@ -6,7 +6,7 @@ import torch
 from torch import nn
 from sklearn.preprocessing import StandardScaler
 from . import config as C
-from .utils import read_hourly,splits,record
+from .utils import complete_window_targets, read_hourly,forecast_splits,record
 
 class StageNet(nn.Module):
     def __init__(self, cell='lstm',hidden=16,layers=1):
@@ -17,20 +17,20 @@ class StageNet(nn.Module):
         z,_=self.recurrent(x);return self.linear(z[:,-1,:]).squeeze(-1)
 
 def windows(values,start,end,lag):
-    idx=[];x=[];y=[]
-    for t in range(max(start,lag),end):
-        v=values[t-lag:t]; target=values[t]
-        if np.isfinite(v).all() and np.isfinite(target):
-            idx.append(t);x.append(v)
-            y.append(target)
-    if not x:raise ValueError('No complete windows. Check gaps or reduce lag.')
-    return torch.tensor(np.array(x)[:,:,None],dtype=torch.float32),torch.tensor(y,dtype=torch.float32),np.array(idx)
+    values = np.asarray(values, dtype=float)
+    idx = np.flatnonzero(complete_window_targets(values, lag)[start:end]) + start
+    if not len(idx):
+        raise ValueError('No complete windows. Check gaps or reduce lag.')
+    history = np.stack([values[t-lag:t] for t in idx])
+    return (torch.tensor(history[:, :, None], dtype=torch.float32),
+            torch.tensor(values[idx], dtype=torch.float32), idx)
 
-def prepare(series,lag):
-    s=series.to_numpy(dtype=float); sp=splits(len(s))
+def prepare(series,lag,partitions=('train','val','test')):
+    s=series.to_numpy(dtype=float); sp=forecast_splits(series.index)
     scaler=StandardScaler().fit(s[:sp['train'][1]][np.isfinite(s[:sp['train'][1]])].reshape(-1,1))
-    z=(s-scaler.mean_[0])/scaler.scale_[0]
-    data={k:windows(z,*sp[k],lag) for k in ('train','val','test')}
+    last=max(sp[k][1] for k in partitions)
+    z=(s[:last]-scaler.mean_[0])/scaler.scale_[0]
+    data={k:windows(z,*sp[k],lag) for k in partitions}
     return data,scaler
 
 def train(data, cell, hidden, layers, loss_fn=None, epochs=35, patience=5, learning_rate=.003):
@@ -65,13 +65,15 @@ def main():
     grid=[(12,12,1),(24,16,1),(48,16,1),(24,32,2),(72,32,1)]
     best=None;trial_rows=[]
     for lag,hidden,layers in grid[:a.trials]:
-        data,sc=prepare(y,lag)
+        data,sc=prepare(y,lag,partitions=('train','val'))
         model,score=train(data,a.cell,hidden,layers,epochs=a.epochs)
         trial_rows.append({'lag':lag,'hidden':hidden,'layers':layers,'validation_loss':score})
-        if best is None or score<best[0]:best=(score,lag,hidden,layers,model,data,sc)
+        if best is None or score<best[0]:best=(score,lag,hidden,layers,model,sc)
     pd.DataFrame(trial_rows).to_csv(C.METRICS/f'{a.cell}_trials.csv',index=False)
-    _,lag,hidden,layers,model,data,sc=best
-    Xt,yt,idx=data['test']; preds=forecast(model,Xt,sc)
+    _,lag,hidden,layers,model,sc=best
+    start,stop=forecast_splits(y.index)['test']
+    z=(y.iloc[:stop].to_numpy(dtype=float)-sc.mean_[0])/sc.scale_[0]
+    Xt,_,idx=windows(z,start,stop,lag); preds=forecast(model,Xt,sc)
     record(a.cell,y.index[idx],y.to_numpy()[idx],preds)
     cfg={'cell':a.cell,'lag':lag,'hidden':hidden,'layers':layers}
     json.dump(cfg,open(C.METRICS/f'{a.cell}_best.json','w'),indent=2)
