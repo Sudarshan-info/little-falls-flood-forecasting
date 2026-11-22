@@ -1,0 +1,10 @@
+{
+  "n": 8760,
+  "PICP": 0.951027397260274,
+  "MPIW_ft": 0.06126690176083804,
+  "crossings": 4,
+  "crossing_pct": 0.045662100456621,
+  "rising_flood_n": 84,
+  "rising_flood_PICP": 0.9285714285714286,
+  "rising_flood_MPIW_ft": 0.18371964367760213
+}

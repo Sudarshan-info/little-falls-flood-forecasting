@@ -1,0 +1,556 @@
+{
+  "base_git_commit": "45b04057ebc6e2ba445d5eeb361553254803e674",
+  "baselines": {
+    "persistence": 1,
+    "seasonal_24h": 24
+  },
+  "canonical_dataset_sha256": {
+    "data/processed/hourly_stage.csv": "41663c8fbe2b8dd29327c7318573a9d66f4d9236e2661bb5ace73e67efdc1a31",
+    "data/raw/measurements.csv": "32bba60e465f52d601dc7a4b49d5c3d58d94cb548e1175cab26d97176080c11a"
+  },
+  "checkpoint_version": "V1",
+  "classical_selections": {
+    "ar": {
+      "MAE_ft": 0.011745296285425224,
+      "MAPE_percent_excluding_near_zero": 0.5318226592167639,
+      "R2": 0.9997466515738723,
+      "RMSE_ft": 0.024635142141221967,
+      "aic": -37455.51365671912,
+      "checkpoint": "classical_trials/ar_400_0000.pkl",
+      "converged": true,
+      "excluded_from_MAPE": 0,
+      "family": "ar",
+      "first_fit_hour": "2022-02-01 16:00:00+00:00",
+      "fit_n": 8000,
+      "fit_seed": null,
+      "fitted_parameters": {
+        "ar.L1": 1.5328652767106217,
+        "ar.L2": -0.37703612523284175,
+        "ar.L3": -0.15585246237085146,
+        "ar.L4": -0.00039972622688382085,
+        "intercept": 0.0008378598887483046,
+        "sigma2": 0.0005406904415258064
+      },
+      "lag": 4,
+      "last_fit_hour": "2022-12-31 23:00:00+00:00",
+      "maxiter": 24,
+      "n": 8760,
+      "name": "ar_400_0000",
+      "optimizer": "lbfgs",
+      "order": [
+        4,
+        0,
+        0
+      ],
+      "residual_acf_1": 0.0002258787938575119,
+      "residual_acf_24": -0.022264316360728155,
+      "residual_std_ft": 0.02328619828350897,
+      "seasonal": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seasonal_order": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seconds": 2.598688800004311,
+      "trend": "c",
+      "warnings": []
+    },
+    "arima": {
+      "MAE_ft": 0.011744970596950118,
+      "MAPE_percent_excluding_near_zero": 0.5308563159492867,
+      "R2": 0.9997472468323172,
+      "RMSE_ft": 0.02460618419500198,
+      "aic": -37453.5524913324,
+      "checkpoint": "classical_trials/arima_111_0000.pkl",
+      "converged": true,
+      "excluded_from_MAPE": 0,
+      "family": "arima",
+      "first_fit_hour": "2022-02-01 16:00:00+00:00",
+      "fit_n": 8000,
+      "fit_seed": null,
+      "fitted_parameters": {
+        "ar.L1": 0.7713649724776697,
+        "ma.L1": -0.237831318860558,
+        "sigma2": 0.0005414470621764436
+      },
+      "lag": 1,
+      "last_fit_hour": "2022-12-31 23:00:00+00:00",
+      "maxiter": 24,
+      "n": 8760,
+      "name": "arima_111_0000",
+      "optimizer": "lbfgs",
+      "order": [
+        1,
+        1,
+        1
+      ],
+      "residual_acf_1": -0.0013975531803482814,
+      "residual_acf_24": -0.02388313742950953,
+      "residual_std_ft": 0.02330162185035724,
+      "seasonal": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seasonal_order": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seconds": 1.0028608000138775,
+      "trend": "n",
+      "warnings": []
+    },
+    "ma": {
+      "MAE_ft": 0.31816781597961785,
+      "MAPE_percent_excluding_near_zero": 14.282273227890435,
+      "R2": 0.9117245016356724,
+      "RMSE_ft": 0.45984985738941314,
+      "aic": 7319.914652903546,
+      "checkpoint": "classical_trials/ma_002_0000.pkl",
+      "converged": true,
+      "excluded_from_MAPE": 0,
+      "family": "ma",
+      "first_fit_hour": "2022-02-01 16:00:00+00:00",
+      "fit_n": 8000,
+      "fit_seed": null,
+      "fitted_parameters": {
+        "intercept": 1.9333265598185612,
+        "ma.L1": 1.8513980024559198,
+        "ma.L2": 0.9526902622385476,
+        "sigma2": 0.1459130623029756
+      },
+      "lag": 2,
+      "last_fit_hour": "2022-12-31 23:00:00+00:00",
+      "maxiter": 24,
+      "n": 8760,
+      "name": "ma_002_0000",
+      "optimizer": "lbfgs",
+      "order": [
+        0,
+        0,
+        2
+      ],
+      "residual_acf_1": 0.8988013783361182,
+      "residual_acf_24": 0.9162883120811364,
+      "residual_std_ft": 0.38252164596140803,
+      "seasonal": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seasonal_order": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "seconds": 2.3735426000785083,
+      "trend": "c",
+      "warnings": []
+    }
+  },
+  "commands": {
+    "note": "Reproduction commands were recorded only. Do not invoke the runner with the original run ID to verify V1.",
+    "reproduce_in_new_run_only": [
+      "$env:MPLBACKEND=\"Agg\"",
+      "$env:MPLCONFIGDIR=[IO.Path]::GetTempPath()",
+      "$env:OMP_NUM_THREADS=\"2\"",
+      "$env:OPENBLAS_NUM_THREADS=\"2\"",
+      "$env:MKL_NUM_THREADS=\"2\"",
+      ".\\.venv\\Scripts\\python.exe -B -m src.experiment --run stage_v1_reproduction --phase all"
+    ],
+    "verify_only": ".\\.venv\\Scripts\\python.exe -B -m unittest discover -s tests -v"
+  },
+  "dataset_release": "dataset-v1.0.0",
+  "descriptive_action_stage_ft": 6.5,
+  "environment": {
+    "installed_package_versions_observed_at_packaging": {
+      "Jinja2": "3.1.6",
+      "MarkupSafe": "3.0.4",
+      "certifi": "2026.11.20",
+      "charset-normalizer": "3.5.2",
+      "cloudpickle": "3.1.3",
+      "contourpy": "1.3.3",
+      "cycler": "0.12.1",
+      "filelock": "4.3.0",
+      "fonttools": "4.68.0",
+      "formulaic": "1.2.2",
+      "fsspec": "2026.9.0",
+      "idna": "3.20",
+      "interface_meta": "2.0.1",
+      "joblib": "1.6.0",
+      "kiwisolver": "1.5.1",
+      "matplotlib": "3.11.2",
+      "mpmath": "1.3.0",
+      "narwhals": "2.29.0",
+      "networkx": "3.6.1",
+      "numpy": "2.4.6",
+      "packaging": "26.3",
+      "pandas": "3.1.1",
+      "patsy": "1.0.3",
+      "pillow": "13.0.0",
+      "pip": "24.0",
+      "pyparsing": "3.3.3",
+      "python-dateutil": "4.0.0",
+      "requests": "2.34.2",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.17.1",
+      "setuptools": "84.2.1",
+      "statsmodels": "0.15.0",
+      "sympy": "1.14.0",
+      "threadpoolctl": "3.8.0",
+      "torch": "2.15.0",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.6",
+      "urllib3": "2.8.0",
+      "wrapt": "2.5.2"
+    },
+    "platform": "Windows, CPU",
+    "python": "3.11.9",
+    "torch_threads": 2
+  },
+  "forecast_protocol": {
+    "evaluation": "Rolling one hour ahead, no test refitting; point comparisons share valid timestamps.",
+    "mape_policy": "Exclude actual magnitude <= max(1e-8, 1% of the common sample mean absolute stage).",
+    "quantile_policy": "No recalibration. Order bounds for coverage and report raw crossings separately.",
+    "rapid_rise_cutoff_ft_per_hour_training_99th_percentile": 0.1200000000000001,
+    "warning": "Point forecasts >=7 ft; event matching requires overlap with an observed positive target."
+  },
+  "line_ending_verification_note": "Main SHA-256 fields hash exact local bytes. The optional LF digests support verification after Git text normalization. Never normalize the canonical dataset hashes or checkpoint hashes.",
+  "neural_and_quantile_selections": {
+    "lower": {
+      "MAE_ft": 0.031007332862745315,
+      "MAPE_percent_excluding_near_zero": 1.5706783502619022,
+      "R2": 0.9991301745370327,
+      "RMSE_ft": 0.045646977436476596,
+      "adam_defaults": {
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "eps": 1e-08,
+        "weight_decay": 0
+      },
+      "best_epoch": 4,
+      "cell": "lstm",
+      "checkpoint": "neural_trials/quantile_lower.pt",
+      "config": {
+        "batch": 384,
+        "epochs": 16,
+        "hidden": 16,
+        "layers": 2,
+        "lookback": 24,
+        "lr": 0.002
+      },
+      "early_stop_patience": 7,
+      "epochs_run": 11,
+      "excluded_from_MAPE": 0,
+      "gradient_clip_norm": 1.0,
+      "loss": "pinball",
+      "n": 8760,
+      "optimizer": "Adam",
+      "output": "training-scaled residual added to latest stage",
+      "quantile": 0.025,
+      "seconds": 5.965531499939971,
+      "seed": 42,
+      "selection_loss": 0.0006503575132228434,
+      "status": "ok",
+      "train_windows": 18000,
+      "trial": "quantile_lower",
+      "validation_windows": 8760
+    },
+    "lstm": {
+      "MAE_ft": 0.011553684429186301,
+      "MAPE_percent_excluding_near_zero": 0.5279955418303075,
+      "R2": 0.9997380946053546,
+      "RMSE_ft": 0.02504771938187487,
+      "adam_defaults": {
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "eps": 1e-08,
+        "weight_decay": 0
+      },
+      "best_epoch": 16,
+      "cell": "lstm",
+      "checkpoint": "neural_trials/lstm_4.pt",
+      "config": {
+        "batch": 384,
+        "epochs": 16,
+        "hidden": 16,
+        "layers": 2,
+        "lookback": 24,
+        "lr": 0.002
+      },
+      "early_stop_patience": 7,
+      "epochs_run": 16,
+      "excluded_from_MAPE": 0,
+      "gradient_clip_norm": 1.0,
+      "loss": "MSE",
+      "n": 8760,
+      "optimizer": "Adam",
+      "output": "training-scaled residual added to latest stage",
+      "quantile": null,
+      "seconds": 8.560599100077525,
+      "seed": 42,
+      "selection_loss": 0.0002615789417177439,
+      "status": "ok",
+      "train_windows": 18000,
+      "trial": "lstm_4",
+      "validation_windows": 8760
+    },
+    "rnn": {
+      "MAE_ft": 0.01332079174824716,
+      "MAPE_percent_excluding_near_zero": 0.5668303586938901,
+      "R2": 0.9996989801627527,
+      "RMSE_ft": 0.026853044119773222,
+      "adam_defaults": {
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "eps": 1e-08,
+        "weight_decay": 0
+      },
+      "best_epoch": 13,
+      "cell": "rnn",
+      "checkpoint": "neural_trials/rnn_4.pt",
+      "config": {
+        "batch": 384,
+        "epochs": 16,
+        "hidden": 16,
+        "layers": 2,
+        "lookback": 24,
+        "lr": 0.002
+      },
+      "early_stop_patience": 7,
+      "epochs_run": 16,
+      "excluded_from_MAPE": 0,
+      "gradient_clip_norm": 1.0,
+      "loss": "MSE",
+      "n": 8760,
+      "optimizer": "Adam",
+      "output": "training-scaled residual added to latest stage",
+      "quantile": null,
+      "seconds": 5.4403234999626875,
+      "seed": 42,
+      "selection_loss": 0.0003006446349900216,
+      "status": "ok",
+      "train_windows": 18000,
+      "trial": "rnn_4",
+      "validation_windows": 8760
+    },
+    "upper": {
+      "MAE_ft": 0.0334185363995884,
+      "MAPE_percent_excluding_near_zero": 1.5869576643407972,
+      "R2": 0.9991410556284951,
+      "RMSE_ft": 0.045360568217612376,
+      "adam_defaults": {
+        "betas": [
+          0.9,
+          0.999
+        ],
+        "eps": 1e-08,
+        "weight_decay": 0
+      },
+      "best_epoch": 13,
+      "cell": "lstm",
+      "checkpoint": "neural_trials/quantile_upper.pt",
+      "config": {
+        "batch": 384,
+        "epochs": 16,
+        "hidden": 16,
+        "layers": 2,
+        "lookback": 24,
+        "lr": 0.002
+      },
+      "early_stop_patience": 7,
+      "epochs_run": 16,
+      "excluded_from_MAPE": 0,
+      "gradient_clip_norm": 1.0,
+      "loss": "pinball",
+      "n": 8760,
+      "optimizer": "Adam",
+      "output": "training-scaled residual added to latest stage",
+      "quantile": 0.975,
+      "seconds": 8.46532999991905,
+      "seed": 42,
+      "selection_loss": 0.0013604388805106282,
+      "status": "ok",
+      "train_windows": 18000,
+      "trial": "quantile_upper",
+      "validation_windows": 8760
+    }
+  },
+  "original_checkpoint_sha256": {
+    "outputs/experiments/stage_v1_20261122/classical_trials/ar_400_0000.pkl": "86498a98720a0468cfa652db76375106607434c3b0f943d854efed08e8227d72",
+    "outputs/experiments/stage_v1_20261122/classical_trials/arima_111_0000.pkl": "46cd5b132d054bea1e7c578697e6e6a8c2aa4e0ad66a7edd2836d9c9d2ad5896",
+    "outputs/experiments/stage_v1_20261122/classical_trials/ma_002_0000.pkl": "bbd7251a5f735b14a8989f467d35f79c0f68fd6c13dc2c63f3900dc0af2106bf",
+    "outputs/experiments/stage_v1_20261122/neural_trials/lstm_4.pt": "751069ba444e327444817445df6adc21ade8b31314a0306cf71f376ad5278a30",
+    "outputs/experiments/stage_v1_20261122/neural_trials/quantile_lower.pt": "92ec847c66ea0ed0771e992c1c477fcdba913d85550efd4ae73fd9570217d672",
+    "outputs/experiments/stage_v1_20261122/neural_trials/quantile_upper.pt": "827c83e04ae41c3a4fb591fa97db0942d629ab26958d54750dcb822a0d8c02ec",
+    "outputs/experiments/stage_v1_20261122/neural_trials/rnn_4.pt": "bb850f1560ec7bda8810872cc1b7646c870e2fc7d1c7c9257a1ed243344b9eb8"
+  },
+  "original_frozen_run": "outputs/experiments/stage_v1_20261122",
+  "original_selected_artifact_sha256": {
+    "outputs/experiments/stage_v1_20261122/final_complete.json": "64a1ec1e60a021a29ba0c611b69a38f98f1208602bd11ba5f12ee18fe9dea5d8",
+    "outputs/experiments/stage_v1_20261122/freeze.json": "44a70e15d36facd3ede782f4e30a96a91fc5e5fa1f1a5d3777b03162dfb6e902",
+    "outputs/experiments/stage_v1_20261122/preflight.json": "668c2f6aaa6b00eccde58c57789dd11562c95f37ff99dd2b6acf8e80af3ad15c",
+    "outputs/experiments/stage_v1_20261122/research_report.md": "2c8a94a4376be74d62602421ba249dcc531123494f14858103781ab0b8fac456",
+    "outputs/experiments/stage_v1_20261122/test_common_metrics.csv": "d715a701e8145ea778091c2183d687259f02df4e6b522b5d00370890242a9e2d",
+    "outputs/experiments/stage_v1_20261122/test_coverage.csv": "1b48c20f5548c8ff0da914c222cadd891d5471792e24dd720674d8c12f90b809",
+    "outputs/experiments/stage_v1_20261122/test_flood_events.csv": "dc47b0d3c872cf96945cd7400bd1db23f80077aefa430dcf8ef7de28e957a8ae",
+    "outputs/experiments/stage_v1_20261122/test_flood_hourly.csv": "59cf7490fa72516f3484c1e4981e53d15f49ac9bbe3aab8aec6087a28f0de35e",
+    "outputs/experiments/stage_v1_20261122/test_quantile_predictions.csv": "6b749d1bc68db36f853a3b85a429a8993f86f65be831d1ae744d961f0aeb90b5",
+    "outputs/experiments/stage_v1_20261122/validation_causality_check.json": "74763428eca72ee24db96b76058150034d881d8fa42fbbfc1ca9a66c3ce156e9",
+    "outputs/experiments/stage_v1_20261122/validation_common_metrics.csv": "91d515c8924cb02ed6ca89bf4da18bff92451aa76ed52307674add3dd4842650"
+  },
+  "primary_flood_stage_ft": 7.0,
+  "publication_scope": "Proposed only. Checkpoints and original run paths are local provenance references and excluded from GitHub.",
+  "release_evidence_sha256": {
+    "docs/research_v1/README.md": "2ecafaf7a82756841f194c2efbb58665e14610d694e0b49919abd729c64acd3e",
+    "docs/research_v1/classical_search.csv": "1912ebe34f1e3aba0816bac53f1c2dfffe12c12a86dbb82154c61eb791de0dbd",
+    "docs/research_v1/lstm_search.csv": "5d5a22836a4b29804d9594b1dc8be45044570546ce82ab58d69ba49559d476f2",
+    "docs/research_v1/lstm_seed_sensitivity.csv": "e4eb03932bd593548ba4d6ff276b38db7ed3a56b691a418c8bc44197b88b0ef7",
+    "docs/research_v1/publication_files.txt": "419336be1344e1c7824261bebe689336e4ce9b358eb1186107e371a2c777b87f",
+    "docs/research_v1/raw_crossing_leads.csv": "bc2cecae454ae32f0636488fbf9b59255e55fd2b335fd08ebfd7e29a0b83615c",
+    "docs/research_v1/rnn_search.csv": "e1c4b7b41147d23a3ef5b9bcede59b9561aef5434b06a1e452c7169b5870d3e2",
+    "docs/research_v1/stationarity.json": "ce02d4787817cbc72b4140edde128eeb5bd3a52fbc06d58b33ab9358447961c9",
+    "docs/research_v1/test_common_metrics.csv": "d715a701e8145ea778091c2183d687259f02df4e6b522b5d00370890242a9e2d",
+    "docs/research_v1/test_coverage.csv": "1b48c20f5548c8ff0da914c222cadd891d5471792e24dd720674d8c12f90b809",
+    "docs/research_v1/test_false_alarm_episodes.csv": "59e68f3c4c1e5f90ba70da2fd67cec20e36c453091a7b86f80168ec2d14712ae",
+    "docs/research_v1/test_flood_hourly.csv": "59cf7490fa72516f3484c1e4981e53d15f49ac9bbe3aab8aec6087a28f0de35e",
+    "docs/research_v1/test_flood_hydrographs.png": "cc8c67e9fb30c8df5a4d9540638b0c3cf4d37b15dd479c272c3ba083976efb3e",
+    "docs/research_v1/test_quantile_interval.png": "a9cc15817279ce809a942a09f430da6eeb874d51c8cb17628894e19db6d0517d",
+    "docs/research_v1/test_quantile_metrics.json": "744ac624ecc4ad6efab6d0aa2ded24dd42e8e88089f8b2aa6bbaac1a2b1fb325",
+    "docs/research_v1/test_rapid_rises.csv": "da6fa6be634a8d3685c2209afe99d1cc1a13347d50f67c3fc1d2541575e1ae2b",
+    "docs/research_v1/training_acf_pacf.png": "01c31a1f9cdaffb28f4a5514c697b638098754a961222525eeecb825d0b58194",
+    "docs/research_v1/validation_common_metrics.csv": "91d515c8924cb02ed6ca89bf4da18bff92451aa76ed52307674add3dd4842650",
+    "docs/research_v1/validation_quantile_metrics.json": "23602cb8de011533d575db778594c9af9571b1fbf8c5bab15ee83c8bac84ce79"
+  },
+  "source_sha256": {
+    "requirements.txt": "0700b12b694412a6c4b0f2961cb15fc6cb5378aeae4be6f75c266771004bb8f2",
+    "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/checkpoint6.py": "c948a2b1d8028e14f793a3d5b7c855bcb1b951d81685615957f62dd88169d6b8",
+    "src/config.py": "2265dd2b8545bd150136025ef9fa6db090e266465cb42fc7cdfa813070f1b7d5",
+    "src/experiment.py": "a53db84ab2684e806ff068fa110600e9cb02f15f84d0b630b867a64fbe48f327",
+    "src/experiment_evaluate.py": "8d46b23b5fcddd87052c2368ff9a3660c6a0c3f5cb27c284c2b9b1494805763f",
+    "src/experiment_neural.py": "daa1f21f9d3de07cbcbdd830b553634e31eb3dcf6ebb787931ee156dc6f09f73",
+    "src/fetch.py": "e2d4d5fbb86e34873712ca6eb4aa885798b1e4cff65b8c7730e1b0c4e7137b79",
+    "src/finalize_dataset.py": "5544ec7ad395d929aa3739e8d176829510563e35ea538c1f7cb9265448869a0e",
+    "src/historical_extension.py": "b808dac956ae3575929a6cb482d18776ef01fc4eebc242f7a7548e92c5090aca",
+    "src/neural.py": "6d963aeec939523992b767de07bd6cff704f19e5bb63059e2fbfb7ebf2052aaf",
+    "src/prepare.py": "8817680193e0018499ef58b78cabc313a173ea5141a807353c6aa95fd1dfc04c",
+    "src/qc.py": "ff33d60a7664e3e92d63acd1826a2e5a89cdab3abda3e184e5f8f5b9e66d9f98",
+    "src/utils.py": "c7e9223c0cadaa3c81a53438b189747a148b29a6fbb09649297190f8334b1093",
+    "tests/test_experiment.py": "9f0edf6e270bf4942e50e22792de1795de936e2c7b93ff3746bd9a59c7d28df5"
+  },
+  "source_version_note": "Runner and experiment test are local uncommitted files, identified by SHA-256. Existing dependencies are identified by base commit and SHA-256.",
+  "split_cutoffs_utc": {
+    "test": [
+      "2024-01-01 00:00",
+      "2025-12-31 23:00"
+    ],
+    "train": [
+      "2007-10-01 00:00",
+      "2022-12-31 23:00"
+    ],
+    "validation": [
+      "2023-01-01 00:00",
+      "2023-12-31 23:00"
+    ]
+  },
+  "text_lf_sha256": {
+    "docs/research_v1/README.md": "2ecafaf7a82756841f194c2efbb58665e14610d694e0b49919abd729c64acd3e",
+    "docs/research_v1/classical_search.csv": "79dc3594da878fc95ee2afefe4dbc1822c3cf02db51aea4a5fc06d9a9fbf45ad",
+    "docs/research_v1/lstm_search.csv": "aaa92bc52ee27aba0af6a3664b11a6bf86ecbb984201819ee4a71b6248d33a2a",
+    "docs/research_v1/lstm_seed_sensitivity.csv": "b4c9424ff36d3477990c2165bfa557cd051833c43200ff160151325d0e59ba52",
+    "docs/research_v1/publication_files.txt": "585b3c34e970f63127f9c9eed0a716b59a4defa087bb4c9a66c98c0f94b46816",
+    "docs/research_v1/raw_crossing_leads.csv": "8b5d40db53dfea6c7542e9a19ab6b2e6abd25ffc5fc4e6343e3412ed804e36de",
+    "docs/research_v1/rnn_search.csv": "295ac73a038a5ea7f5ffbf749a594dbfede29db3fd744f71d5dc72ce951487e0",
+    "docs/research_v1/stationarity.json": "9e32d2530b1ecedc8b031205db9a3dc1b3902b071d006730dad7814c3d19fdf7",
+    "docs/research_v1/test_common_metrics.csv": "99be26035997e9be7ee177ece15aa8d0b3fdaad1f04b34ef8b1ec99cf78ec8a0",
+    "docs/research_v1/test_coverage.csv": "1bd6c1a3572f7a17f150f2381548e10cb0c1a3ccf9de6b1f30a55bd7b468c316",
+    "docs/research_v1/test_false_alarm_episodes.csv": "9a88912e875a849ac56f50fb325d0ed4767d7129d276809bc7d3e923726cd22e",
+    "docs/research_v1/test_flood_hourly.csv": "0ec3366c597def95eb06d0eedb6ee25e5f7219a7ed8b3afd2b72fb01904ee347",
+    "docs/research_v1/test_quantile_metrics.json": "2ba341efbcc878ba86f4ffdad8460fbb1d6b12d947e013fd7c739f0fc85943f6",
+    "docs/research_v1/test_rapid_rises.csv": "3a2b8498c0cb52dfd6aa03e11a84859075fc1767672d47ee839edee7858afcd8",
+    "docs/research_v1/validation_common_metrics.csv": "3f4eba92f0a308e213dce96c6964ab07d00d45de88339b2eaa9a18aaef068b93",
+    "docs/research_v1/validation_quantile_metrics.json": "ad77fc045c21979dbe7d5dd9697114dee5cfee6cd382fe26380727cfe1d15dfb",
+    "requirements.txt": "0700b12b694412a6c4b0f2961cb15fc6cb5378aeae4be6f75c266771004bb8f2",
+    "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/checkpoint6.py": "c948a2b1d8028e14f793a3d5b7c855bcb1b951d81685615957f62dd88169d6b8",
+    "src/config.py": "2265dd2b8545bd150136025ef9fa6db090e266465cb42fc7cdfa813070f1b7d5",
+    "src/experiment.py": "a53db84ab2684e806ff068fa110600e9cb02f15f84d0b630b867a64fbe48f327",
+    "src/experiment_evaluate.py": "8d46b23b5fcddd87052c2368ff9a3660c6a0c3f5cb27c284c2b9b1494805763f",
+    "src/experiment_neural.py": "daa1f21f9d3de07cbcbdd830b553634e31eb3dcf6ebb787931ee156dc6f09f73",
+    "src/fetch.py": "e2d4d5fbb86e34873712ca6eb4aa885798b1e4cff65b8c7730e1b0c4e7137b79",
+    "src/finalize_dataset.py": "5544ec7ad395d929aa3739e8d176829510563e35ea538c1f7cb9265448869a0e",
+    "src/historical_extension.py": "b808dac956ae3575929a6cb482d18776ef01fc4eebc242f7a7548e92c5090aca",
+    "src/neural.py": "6d963aeec939523992b767de07bd6cff704f19e5bb63059e2fbfb7ebf2052aaf",
+    "src/prepare.py": "8817680193e0018499ef58b78cabc313a173ea5141a807353c6aa95fd1dfc04c",
+    "src/qc.py": "ff33d60a7664e3e92d63acd1826a2e5a89cdab3abda3e184e5f8f5b9e66d9f98",
+    "src/utils.py": "c7e9223c0cadaa3c81a53438b189747a148b29a6fbb09649297190f8334b1093",
+    "tests/test_experiment.py": "9f0edf6e270bf4942e50e22792de1795de936e2c7b93ff3746bd9a59c7d28df5"
+  },
+  "training_exposures": {
+    "classical_fit_hours": 8000,
+    "classical_flood_events": 1,
+    "classical_flood_hours": 57,
+    "neural_tuning_sample_windows": 18000,
+    "selected_24h_events_represented": 14,
+    "selected_24h_flood_targets": 200,
+    "selected_24h_train_event_targets_by_chronological_event": [
+      8,
+      24,
+      7,
+      17,
+      33,
+      13,
+      6,
+      24,
+      23,
+      11,
+      4,
+      6,
+      16,
+      8
+    ],
+    "train_scaler": {
+      "mean": 2.162760531070312,
+      "n": 133391,
+      "scale": 1.5486983265498158
+    },
+    "validation_only_lstm_replicate_seeds": [
+      43,
+      44
+    ]
+  },
+  "verification": {
+    "final_test_rescored": false,
+    "offline_tests_failed": 0,
+    "offline_tests_passed": 20,
+    "original_experiment_files_unchanged": 129,
+    "verified_against_original": [
+      "canonical data hashes",
+      "freeze checkpoint hashes",
+      "validation-selection manifests",
+      "training-only scaler",
+      "saved issue/target alignment",
+      "24-hour selected neural sample coverage",
+      "raw flood crossing times",
+      "quantile crossing count"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+model,eligible_pairs,possible_targets,coverage_fraction
+persistence,17544,17544,1.0
+seasonal_24h,17544,17544,1.0
+ar,17544,17544,1.0
+arima,17544,17544,1.0
+ma,17544,17544,1.0
+rnn,17544,17544,1.0
+lstm,17544,17544,1.0
+quantile_interval,17544,17544,1.0
