@@ -1,0 +1,69 @@
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local data and download caches
+/data/**
+!/data/raw/
+!/data/raw/.gitkeep
+!/data/processed/
+!/data/processed/.gitkeep
+.cache/
+*.zip
+
+# Credentials and machine-specific settings
+.env
+.env.*
+!.env.example
+.aws/
+.ssh/
+.netrc
+credentials*
+secrets/
+secrets.*
+*.pem
+*.key
+*.pfx
+*.p12
+.vscode/
+
+# Model weights and serialized models
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+*.h5
+*.keras
+*.joblib
+*.pkl
+*.pickle
+*.bin
+
+# Temporary and editor files
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Generated output is private to the workspace by default.
+/outputs/**
+!/outputs/figures/
+!/outputs/metrics/
+!/outputs/figures/.gitkeep
+!/outputs/metrics/.gitkeep
+!/outputs/figures/qc_thresholds_and_splits.png
+!/outputs/metrics/qc_annual_thresholds.csv
+!/outputs/metrics/qc_flood_events.csv
+!/outputs/metrics/qc_chronological_split.csv
+!/outputs/metrics/qc_event_split_membership.csv
+!/outputs/metrics/qc_event_separation.csv
+!/outputs/metrics/qc_baseline_summary.csv
