@@ -1,0 +1,8 @@
+minimum_below_threshold_hours,events,flood_hours,train_events,val_events,test_events
+1,10,694,10,0,0
+6,8,694,8,0,0
+12,8,694,8,0,0
+24,8,694,8,0,0
+48,8,694,8,0,0
+72,8,694,8,0,0
+168,7,694,7,0,0

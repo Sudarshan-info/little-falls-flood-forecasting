@@ -85,14 +85,15 @@ def main():
     split_rows = []
     split_by_event = []
     for name, (lo, hi) in bounds.items():
+        split_name = 'validation' if name == 'val' else name
         section = hourly.iloc[lo:hi]
         ids = event_ids.reindex(section.index).dropna().astype(int)
         started = events.start_utc.between(section.index[0], section.index[-1]).sum()
-        split_rows.append(dict(split={'val': 'validation'}.get(name, name), start_utc=section.index[0], end_utc=section.index[-1],
+        split_rows.append(dict(split=split_name, start_utc=section.index[0], end_utc=section.index[-1],
                            hourly_rows=len(section), flood_hours=len(ids),
                            events_with_flood_hours=ids.nunique(), events_started=int(started)))
         for eid, count in ids.value_counts(sort=False).items():
-            split_by_event.append(dict(event_id=eid, split={'val': 'validation'}.get(name, name), flood_hours=count))
+            split_by_event.append(dict(event_id=eid, split=split_name, flood_hours=count))
     split_summary = pd.DataFrame(split_rows)
     split_by_event = pd.DataFrame(split_by_event)
 
@@ -147,7 +148,8 @@ def main():
 
     plt.rcParams.update({'font.size': 11, 'axes.spines.top': False, 'axes.spines.right': False})
     fig, ax = plt.subplots(figsize=(14, 5.5), layout='constrained')
-    ax.plot(raw.index, raw.stage_ft, color='#126487', linewidth=.65, label='15-minute gage height')
+    ax.plot(raw.index, raw.stage_ft, color='#9bc4d2', linewidth=.65, label='Raw gage height')
+    ax.plot(hourly.index, hourly.stage_ft, color='#126487', linewidth=.75, label='Prepared hourly stage')
     colors = ('#8b6b00', '#a64b16', '#aa2e46', '#662a74')
     categories = ('Action', 'Minor flood', 'Moderate flood', 'Major flood')
     for level, color, category in zip(thresholds, colors, categories):
@@ -155,7 +157,7 @@ def main():
     ax.set_xticks([pd.Timestamp(f'{year}-01-01', tz='UTC') for year in years])
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
     ax.set_xlim(start, stop)
-    ax.set(title='Passaic River at Little Falls | USGS 01389500', ylabel='Gage height (ft)', xlabel='Observation time (UTC)')
+    ax.set(title='Passaic River at Little Falls | USGS 01389500', ylabel='Gage height (ft)', xlabel='Time (UTC)')
     ax.grid(axis='y', alpha=.2)
     ax.legend(ncol=3, loc='lower left', framealpha=.96)
     fig.savefig(figures / 'qc_stage_2021_2025.png', dpi=180)
@@ -177,7 +179,7 @@ def main():
     for axis in (ax, bx):
         axis.grid(axis='y', alpha=.2)
         axis.set_axisbelow(True)
-    fig.savefig(figures / 'qc_thresholds_and_split_summary.png', dpi=180)
+    fig.savefig(figures / 'qc_thresholds_and_splits.png', dpi=180)
     plt.close(fig)
 
     for path, digest in original.items():
