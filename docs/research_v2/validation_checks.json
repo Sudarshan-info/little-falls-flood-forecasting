@@ -1,0 +1,24 @@
+{
+  "ar": {
+    "years_better_than_persistence": 5
+  },
+  "arima": {
+    "years_better_than_persistence": 5
+  },
+  "rnn": {
+    "years_better_than_persistence": 5
+  },
+  "lstm": {
+    "years_better_than_persistence": 5
+  },
+  "free": {
+    "rapid_hours": 261,
+    "rapid_covered": 13,
+    "rapid_above_upper": 248
+  },
+  "ordered": {
+    "rapid_hours": 261,
+    "rapid_covered": 3,
+    "rapid_above_upper": 258
+  }
+}

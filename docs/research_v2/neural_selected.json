@@ -1,0 +1,32 @@
+{
+  "rnn": {
+    "name": "longer36",
+    "settings": {
+      "lag": 24,
+      "hidden": 16,
+      "layers": 2,
+      "batch": 384,
+      "lr": 0.002,
+      "epochs": 36,
+      "cap": 18000,
+      "sampling": "uniform",
+      "features": false,
+      "decay": 0.0
+    }
+  },
+  "lstm": {
+    "name": "longer36",
+    "settings": {
+      "lag": 24,
+      "hidden": 16,
+      "layers": 2,
+      "batch": 384,
+      "lr": 0.002,
+      "epochs": 36,
+      "cap": 18000,
+      "sampling": "uniform",
+      "features": false,
+      "decay": 0.0
+    }
+  }
+}

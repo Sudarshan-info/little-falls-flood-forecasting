@@ -1,0 +1,6 @@
+family,attempted_folds,fit_and_evaluation_seconds,success,nonconverged,failed,pruned
+baseline,10,0.09378670004662126,10,0,0,0
+classical,110,224.97669090086129,96,10,0,4
+interval,6,44.04863689979538,6,0,0,0
+lstm,23,522.7240518004401,23,0,0,0
+rnn,18,374.0638324000174,17,0,0,1

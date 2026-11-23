@@ -1,0 +1,4 @@
+{
+  "common_target_mask": "target and previous 48 hourly observations must be finite",
+  "scope": "all point models and folds; interval variants share their own identical samples"
+}

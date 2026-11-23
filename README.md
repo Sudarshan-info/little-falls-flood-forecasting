@@ -4,21 +4,22 @@ Time-Series Forecasting course project on one-hour-ahead river-stage prediction 
 
 | Course material | Where to find it |
 |---|---|
-| Academic report | [Final PDF](course_report/final_review/academic_report_final_review.pdf) · [Editable Markdown](course_report/final_review/academic_report_final_review.md) |
+| Academic report | [Final academic report PDF](course_report/final_review/academic_report_submission_final.pdf) · [Editable Markdown](course_report/final_review/academic_report_submission_final.md) |
 | Research poster | [36 × 24 in PDF](course_report/final_review/Little_Falls_Research_Poster_36x24_final_review.pdf) |
-| Five-minute presentation | [Submission PowerPoint](course_report/final_review/Little_Falls_5_Minute_Presentation_Submission.pptx) |
-| Source code | [Python modules](src/) · [Automated tests](tests/) |
+| Optional five-minute slides | [PowerPoint](course_report/final_review/Little_Falls_5_Minute_Presentation_Submission.pptx) |
+| Source and tests | [Python modules](src/) · [Offline tests](tests/) |
 | Data | [Public dataset-v1.0.0 release](https://github.com/Sudarshan-info/little-falls-flood-forecasting/releases/tag/dataset-v1.0.0) |
-| Results | [Frozen V1 report and metrics](docs/research_v1/) |
+| V1 final-test results | [Frozen V1 research and reproduction instructions](docs/research_v1/) |
+| V2 historical validation | [Protocol, saved results, and reproduction instructions](docs/research_v2/) |
 
 V1 uses 2023 for model selection and 2024–2025 for the final test. V2 uses five earlier validation folds and has no new independent final test. V1 ARIMA overlapped all three final-test floods, with first matched alerts 15, 60 and 0 minutes before raw-stage crossings. The proposed 7-ft alert is for supplemental staff review. The report's $1,325 difference versus persistence comes from an assumed-cost scenario.
 
 ### Rebuild the course files
 
-The editable report, figure assets and poster source are in [the course folder](course_report/final_review/). With Chrome installed, run the following in PowerShell to rebuild the report and poster.
+The editable report, figure assets and poster source are in [the course folder](course_report/final_review/). With Chrome installed, run the following in PowerShell to rebuild the final report PDF. The poster and slides are alternate formats for the five-minute presentation.
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install Markdown reportlab qrcode Pillow
+.\.venv\Scripts\python.exe -m pip install Markdown
 .\.venv\Scripts\python.exe -B course_report/final_review/build_course_deliverables.py --chrome 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 ```
 
@@ -51,7 +52,7 @@ The canonical raw and hourly files are `data/raw/measurements.csv` and `data/pro
 
 Download the ZIP and its `.zip.sha256` file from the public [dataset-v1.0.0 release](https://github.com/Sudarshan-info/little-falls-flood-forecasting/releases/tag/dataset-v1.0.0). The ZIP contains the two canonical CSVs, source URLs and QC metadata, and an internal `SHA256SUMS.txt` manifest. GitHub also provides separate source-code archives.
 
-Run these commands from a fresh checkout of the release tag with the Python environment set up and both release assets in the current directory:
+Run these commands from a fresh project checkout with both release assets in the current directory. Copy the two verified CSVs directly from the archive to reproduce the published modeling inputs.
 
 ```powershell
 $archive = 'little-falls-usgs-01389500-2007-2025-v1.0.0.zip'
@@ -59,7 +60,7 @@ $hash = (Get-Content "$archive.sha256").Split()[0]
 if ((Get-FileHash $archive -Algorithm SHA256).Hash -ne $hash) { throw 'Archive checksum mismatch' }
 Expand-Archive $archive -DestinationPath data/release-v1.0.0
 Copy-Item data/release-v1.0.0/raw/measurements.csv data/raw/measurements.csv
-.\.venv\Scripts\python.exe -B -m src.prepare
+Copy-Item data/release-v1.0.0/processed/hourly_stage.csv data/processed/hourly_stage.csv
 Get-FileHash data/raw/measurements.csv,data/processed/hourly_stage.csv -Algorithm SHA256
 ```
 

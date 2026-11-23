@@ -1,0 +1,17 @@
+{
+  "years": [
+    2014,
+    2018,
+    2021,
+    2022,
+    2023
+  ],
+  "latest_observation_utc": "2023-12-31 23:00",
+  "primary": "Pooled hourly validation RMSE across all five folds",
+  "guardrail": "Normal-stage RMSE (target <6.5 ft) must be <=105% of persistence.",
+  "secondary": "MAE, rapid rise (each fold training-only 99th percentile), near threshold (+/-0.5 ft), event overlap and per-year variability",
+  "dataset_sha256": [
+    "32bba60e465f52d601dc7a4b49d5c3d58d94cb548e1175cab26d97176080c11a",
+    "41663c8fbe2b8dd29327c7318573a9d66f4d9236e2661bb5ace73e67efdc1a31"
+  ]
+}

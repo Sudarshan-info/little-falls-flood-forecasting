@@ -1,40 +1,62 @@
-@page { size: letter; margin: 0.67in 0.72in 0.70in 0.72in;
-  @bottom-center { content: counter(page); font: 8.5pt Georgia, serif; color: #555; }
+@page {
+  size: letter;
+  margin: 0.75in 0.85in;
+  @bottom-center { content: counter(page); font: 9pt Georgia, serif; }
 }
-html { font-size: 10pt; }
-body { font: 10pt/1.33 Georgia, 'Times New Roman', serif; color: #202329; }
-h1 { font-family: 'Liberation Sans', Arial, sans-serif; font-size: 19pt; line-height: 1.16; color: #152a39; margin: 0 0 0.16in 0; }
-h2 { font-family: 'Liberation Sans', Arial, sans-serif; font-size: 12.4pt; line-height: 1.18; color: #132b40; margin: 0.24in 0 0.09in 0; page-break-after: avoid; }
-h3 { font-family: 'Liberation Sans', Arial, sans-serif; font-size: 10.8pt; margin: 0.16in 0 0.08in; page-break-after: avoid; }
-p { margin: 0 0 0.11in 0; orphans: 3; widows: 3; }
-a { color: #1e5375; text-decoration: none; }
-strong { font-weight: bold; }
-table { width: 100%; border-collapse: collapse; font-size: 8.9pt; margin: 0.10in 0 0.16in; page-break-inside: avoid; }
-th { text-align: left; color: #1c2d3a; font-family: 'Liberation Sans',Arial,sans-serif; font-size: 8.6pt; background: #ebeff2; border-bottom: 1px solid #99a7b0; padding: 5px 5px; }
-td { border-bottom: 1px solid #e1e5e9; padding: 4px 5px; vertical-align: top; }
-tr { break-inside: avoid; }
-img { display: block; max-width: 100%; height: auto; max-height: 4.65in; margin: 0.10in auto 0.06in; break-inside: avoid; }
-img[src$='figure_1.png'] { max-height: 2.3in; }
-img[src$='figure_2.png'] { max-height: 4.25in; }
-img[src$='figure_3.png'] { max-height: 3.1in; }
-img[src$='figure_4.png'] { max-height: 4.25in; }
-img[src$='figure_5.png'] { max-height: 3.7in; }
-img[src$='figure_6.png'] { max-height: 2.2in; }
-p:has(> img) { break-inside: avoid; margin-top: 0.06in; }
-p:has(> em:first-child) { text-align: center; font-size: 8.5pt; color: #515b63; margin-top: 0.04in; margin-bottom: 0.13in; }
-.pagebreak { break-before: page; }
-li { margin-bottom: 0.06in; }
-/* Expanded edition: compact but readable course-report style */
-header#title-block-header { display: none; }
-@page { margin: 0.62in 0.70in 0.64in 0.70in; }
-body { font-size: 9.8pt; line-height: 1.28; }
-h2 { margin-top: 0.17in; margin-bottom: 0.07in; }
-h3 { margin-top: 0.12in; margin-bottom: 0.055in; }
-p { margin-bottom: 0.085in; }
+
+body {
+  margin: 0;
+  color: #202329;
+  font: 11pt/1.28 Georgia, 'Times New Roman', serif;
+}
+
+h1, h2, h3, h4 {
+  color: #172333;
+  font-family: Arial, sans-serif;
+  line-height: 1.18;
+  text-align: left;
+  break-after: avoid;
+}
+h1 { font-size: 19pt; margin: 0 0 0.15in; }
+h2 { font-size: 14pt; margin: 0.19in 0 0.08in; }
+h3 { font-size: 12pt; margin: 0.14in 0 0.065in; }
+h4 { font-size: 11pt; margin: 0.11in 0 0.055in; }
+
+p {
+  margin: 0 0 0.085in;
+  text-align: justify;
+  text-align-last: start;
+  orphans: 3;
+  widows: 3;
+}
+.byline { margin-bottom: 0.15in; text-align: left; }
 li { margin-bottom: 0.035in; }
-table { margin-top: 0.075in; margin-bottom: 0.11in; font-size: 8.4pt; }
-th { font-size: 8.25pt; padding: 4px; }
-td { padding: 3.5px 4px; }
-img[src$='figure_2.png'] { max-height: 3.8in; }
-img[src$='figure_4.png'] { max-height: 3.85in; }
+a { color: #204c6c; overflow-wrap: anywhere; }
+
+table { width: 100%; border-collapse: collapse; font-size: 9.6pt; margin: 0.09in 0 0.13in; }
+thead { display: table-header-group; }
+th, td { padding: 4px; border-bottom: 1px solid #d8dce0; vertical-align: top; }
+th { background: #edf0f2; text-align: left; }
+tr { break-inside: avoid; }
+th:not([style]), td:not([style]) { text-align: left; }
+
+figure { margin: 0.11in 0 0.13in; break-inside: avoid; }
+img { display: block; max-width: 100%; max-height: 3.8in; width: auto; height: auto; margin: 0 auto 0.06in; }
+img[src$='figure_1.png'] { max-height: 2.65in; }
+img[src$='figure_3.png'] { max-height: 3.1in; }
 img[src$='figure_5.png'] { max-height: 3.4in; }
+img[src$='figure_6.png'] { max-height: 2.2in; }
+figcaption { text-align: center; color: #363f48; font-size: 9.5pt; }
+
+.math { font-family: 'Cambria Math', Cambria, serif; }
+.equation {
+  position: relative;
+  margin: 0.055in 0 0.09in;
+  padding-inline: 0.3in;
+  text-align: center;
+  break-inside: avoid;
+}
+.equation-number { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+.equation-intro { break-after: avoid; }
+.equation sub, .equation sup { line-height: 0; }
+.pagebreak { break-before: page; }
