@@ -53,6 +53,18 @@ secrets.*
 *~
 .DS_Store
 Thumbs.db
+~$*.pptx
+/course_report/final_review/academic_report_final_review.html
+
+# Private speaking notes and the original presentation with embedded notes.
+/course_report/final_review/Little_Falls_5_Minute_Presentation.pptx
+/course_report/**/Poster_5min_Talk.md
+/course_report/**/*[Ss]peaking_[Nn]otes.*
+/course_report/**/*[Ss]peaker_[Nn]otes.*
+/course_report/**/*[Rr]ehearsal*.md
+/course_report/**/*[Rr]ehearsal*.txt
+/course_report/**/*[Rr]ehearsal*.doc*
+/course_report/**/*[Rr]ehearsal*.pdf
 
 # Generated output is private to the workspace by default.
 /outputs/**

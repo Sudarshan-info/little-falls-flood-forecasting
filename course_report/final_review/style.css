@@ -1,0 +1,40 @@
+@page { size: letter; margin: 0.67in 0.72in 0.70in 0.72in;
+  @bottom-center { content: counter(page); font: 8.5pt Georgia, serif; color: #555; }
+}
+html { font-size: 10pt; }
+body { font: 10pt/1.33 Georgia, 'Times New Roman', serif; color: #202329; }
+h1 { font-family: 'Liberation Sans', Arial, sans-serif; font-size: 19pt; line-height: 1.16; color: #152a39; margin: 0 0 0.16in 0; }
+h2 { font-family: 'Liberation Sans', Arial, sans-serif; font-size: 12.4pt; line-height: 1.18; color: #132b40; margin: 0.24in 0 0.09in 0; page-break-after: avoid; }
+h3 { font-family: 'Liberation Sans', Arial, sans-serif; font-size: 10.8pt; margin: 0.16in 0 0.08in; page-break-after: avoid; }
+p { margin: 0 0 0.11in 0; orphans: 3; widows: 3; }
+a { color: #1e5375; text-decoration: none; }
+strong { font-weight: bold; }
+table { width: 100%; border-collapse: collapse; font-size: 8.9pt; margin: 0.10in 0 0.16in; page-break-inside: avoid; }
+th { text-align: left; color: #1c2d3a; font-family: 'Liberation Sans',Arial,sans-serif; font-size: 8.6pt; background: #ebeff2; border-bottom: 1px solid #99a7b0; padding: 5px 5px; }
+td { border-bottom: 1px solid #e1e5e9; padding: 4px 5px; vertical-align: top; }
+tr { break-inside: avoid; }
+img { display: block; max-width: 100%; height: auto; max-height: 4.65in; margin: 0.10in auto 0.06in; break-inside: avoid; }
+img[src$='figure_1.png'] { max-height: 2.3in; }
+img[src$='figure_2.png'] { max-height: 4.25in; }
+img[src$='figure_3.png'] { max-height: 3.1in; }
+img[src$='figure_4.png'] { max-height: 4.25in; }
+img[src$='figure_5.png'] { max-height: 3.7in; }
+img[src$='figure_6.png'] { max-height: 2.2in; }
+p:has(> img) { break-inside: avoid; margin-top: 0.06in; }
+p:has(> em:first-child) { text-align: center; font-size: 8.5pt; color: #515b63; margin-top: 0.04in; margin-bottom: 0.13in; }
+.pagebreak { break-before: page; }
+li { margin-bottom: 0.06in; }
+/* Expanded edition: compact but readable course-report style */
+header#title-block-header { display: none; }
+@page { margin: 0.62in 0.70in 0.64in 0.70in; }
+body { font-size: 9.8pt; line-height: 1.28; }
+h2 { margin-top: 0.17in; margin-bottom: 0.07in; }
+h3 { margin-top: 0.12in; margin-bottom: 0.055in; }
+p { margin-bottom: 0.085in; }
+li { margin-bottom: 0.035in; }
+table { margin-top: 0.075in; margin-bottom: 0.11in; font-size: 8.4pt; }
+th { font-size: 8.25pt; padding: 4px; }
+td { padding: 3.5px 4px; }
+img[src$='figure_2.png'] { max-height: 3.8in; }
+img[src$='figure_4.png'] { max-height: 3.85in; }
+img[src$='figure_5.png'] { max-height: 3.4in; }

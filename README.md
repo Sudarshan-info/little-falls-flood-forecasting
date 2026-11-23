@@ -1,5 +1,27 @@
 # Little Falls flood forecasting
 
+Time-Series Forecasting course project on one-hour-ahead river-stage prediction and a supplemental staff-review alert at Little Falls, New Jersey.
+
+| Course material | Where to find it |
+|---|---|
+| Academic report | [Final PDF](course_report/final_review/academic_report_final_review.pdf) · [Editable Markdown](course_report/final_review/academic_report_final_review.md) |
+| Research poster | [36 × 24 in PDF](course_report/final_review/Little_Falls_Research_Poster_36x24_final_review.pdf) |
+| Five-minute presentation | [Submission PowerPoint](course_report/final_review/Little_Falls_5_Minute_Presentation_Submission.pptx) |
+| Source code | [Python modules](src/) · [Automated tests](tests/) |
+| Data | [Public dataset-v1.0.0 release](https://github.com/Sudarshan-info/little-falls-flood-forecasting/releases/tag/dataset-v1.0.0) |
+| Results | [Frozen V1 report and metrics](docs/research_v1/) |
+
+V1 uses 2023 for model selection and 2024–2025 for the final test. V2 uses five earlier validation folds and has no new independent final test. V1 ARIMA overlapped all three final-test floods, with first matched alerts 15, 60 and 0 minutes before raw-stage crossings. The proposed 7-ft alert is for supplemental staff review. The report's $1,325 difference versus persistence comes from an assumed-cost scenario.
+
+### Rebuild the course files
+
+The editable report, figure assets and poster source are in [the course folder](course_report/final_review/). With Chrome installed, run the following in PowerShell to rebuild the report and poster.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install Markdown reportlab qrcode Pillow
+.\.venv\Scripts\python.exe -B course_report/final_review/build_course_deliverables.py --chrome 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+```
+
 This research project forecasts the next hourly river stage at USGS station **01389500**, Passaic River at Little Falls, New Jersey (NOAA gage **LTFN4**). A second task is predicting whether the next hour reaches **7.0 ft**, the minor flood threshold. The thresholds are 6.5 ft (action), 7.0 ft (minor), 8.0 ft (moderate), and 9.0 ft (major). Stage is in feet relative to the gage datum.
 
 Sources: [USGS station and parameter](https://waterdata.usgs.gov/nwis/uv?legacy=1&site_no=01389500), [USGS continuous API schema](https://api.waterdata.usgs.gov/ogcapi/v1/collections/continuous/schema?f=html), and [NOAA flood thresholds](https://water.noaa.gov/gauges/ltfn4).
@@ -27,7 +49,7 @@ The canonical raw and hourly files are `data/raw/measurements.csv` and `data/pro
 
 ### Reproduce from the versioned dataset
 
-With access to the private repository, download the ZIP and its `.zip.sha256` file from [dataset-v1.0.0](https://github.com/Sudarshan-info/little-falls-flood-forecasting/releases/tag/dataset-v1.0.0). The ZIP contains the two canonical CSVs, source URLs and QC metadata, and an internal `SHA256SUMS.txt` manifest. GitHub also provides separate source-code archives.
+Download the ZIP and its `.zip.sha256` file from the public [dataset-v1.0.0 release](https://github.com/Sudarshan-info/little-falls-flood-forecasting/releases/tag/dataset-v1.0.0). The ZIP contains the two canonical CSVs, source URLs and QC metadata, and an internal `SHA256SUMS.txt` manifest. GitHub also provides separate source-code archives.
 
 Run these commands from a fresh checkout of the release tag with the Python environment set up and both release assets in the current directory:
 
@@ -102,23 +124,3 @@ Preparation uses the last valid reading in each UTC hour ending at the labeled c
 The audit rebuilds the 43,825 hourly rows from 175,293 raw readings, checks for source-grid gaps and readings after the hourly cutoff, and writes figures and tables under `outputs/`. The annual summary reports strict and inclusive threshold counts. Flood events use the hourly 7.0 ft threshold. A dip with fewer than 24 consecutive below-threshold hourly readings is part of the same event. A dip of 24 hours or longer separates events. Durations include both endpoint hours and any bridged dips. The sensitivity CSV compares several other separation lengths without changing the 7 ft threshold.
 
 The event count stays at eight for 6, 12, 24, 48, and 72 hours of separation. A one-hour rule yields ten events and a one-week rule yields seven. The 70/15/15 chronological split places all 8 events under the 24-hour rule and all 694 flood hours in training. Validation and test have zero events and zero flood hours under every rule tested. Persistence and the 24-hour-lag baseline measure stage forecast errors in the test period, when stage stays below flood level. Flood recall, missed-event rates, and warning lead time require independent floods in held-out periods. Avoid random hour-level splits, which can put different hours from the same event in training and evaluation.
-
-## Course and dissertation scope
-
-- **Time-Series course.** Focus on one-hour-ahead stage forecasting, exploratory diagnostics, transparent baselines, and comparisons with classical models. Select model orders with training diagnostics and validation. Compare models on the same target timestamps.
-- **SAU dissertation.** Treat flood warning as a separate research question. The Sugeno-style neuro-fuzzy classifier is a feasibility demonstration. Dissertation claims need a defensible event-level evaluation, including missed floods, false alarms, and warning lead time, with enough distinct held-out floods.
-
-Later experiments, after the evaluation design is settled:
-
-```powershell
-python -m src.audit
-python -m src.classical arima --p 2 --d 1 --q 1
-python -m src.neural rnn --trials 2
-python -m src.neural lstm --trials 2
-python -m src.quantile
-python -m src.decision
-python -m src.sau
-python -m src.compare
-```
-
-The model settings above are examples. The present split cannot support operational flood-warning claims.
